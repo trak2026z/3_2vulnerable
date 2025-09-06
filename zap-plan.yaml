@@ -1,0 +1,32 @@
+env:
+  contexts:
+    - name: "app"
+      urls:
+        - "http://app:8080"
+      authentication:
+        method: form
+        parameters:
+          loginPageUrl: "http://app:8080/login"
+          loginRequestUrl: "http://app:8080/login"
+          loginRequestBody: "username={%username%}&password={%password%}"
+      users:
+        - name: "user1"
+          credentials:
+            username: "user1"
+            password: "haslo"
+
+jobs:
+  - type: spider
+    parameters:
+      context: "app"
+      user: "user1"
+
+  - type: activeScan
+    parameters:
+      context: "app"
+      user: "user1"
+
+  - type: report
+    parameters:
+      template: traditional-html
+      reportFile: /zap/wrk/zap_report.html
